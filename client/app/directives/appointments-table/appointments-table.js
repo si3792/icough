@@ -6,13 +6,22 @@ app.directive('cdAppointmentsTable', function() {
         templateUrl: 'app/directives/appointments-table/appointments-table.html',
         controller: ['$scope', 'AccountService', function($scope, AccountService) {
 
-            $scope.appointmentsData = AccountService.appointments.query();
+            $scope.queryParams = {
+              //state: 'P',
+              ordering: '-time'
+            };
+
             $scope.RELATIVE_DATE_CUTOFF_MINUTES = 600;
 
             $scope.isDoctor = false;
             AccountService.isDoctor().then(function(response) {
                 $scope.isDoctor = response;
             });
+
+            $scope.refreshData = function() {
+              $scope.appointmentsData = AccountService.appointments.query($scope.queryParams);
+            }
+            $scope.refreshData();
 
             /**
              *    Function to calculate difference between two dates
@@ -37,6 +46,13 @@ app.directive('cdAppointmentsTable', function() {
               return 'Pending';
             }
 
+            $scope.setOrdering = function(order) {
+              if($scope.queryParams.ordering == order) {
+                  $scope.queryParams.ordering = "-" + order;
+              }
+              else  $scope.queryParams.ordering = order;
+                $scope.refreshData();
+            }
 
         }]
     }

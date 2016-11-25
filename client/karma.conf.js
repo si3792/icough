@@ -23,6 +23,8 @@ module.exports = function(config) {
             'node_modules/angular-oauth2/dist/angular-oauth2.js',
             'node_modules/angular-bootstrap-alert-modals/dist/angular-bootstrap-alert-modals.min.js',
             'node_modules/angular-modal-service/dst/angular-modal-service.js',
+            'node_modules/moment/moment.js',
+            'node_modules/angular-moment/angular-moment.js',
             'app/**/*.js',
             'app/**/*.html'
         ],

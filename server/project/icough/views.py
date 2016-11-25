@@ -17,5 +17,5 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.OrderingFilter,
                        filters.DjangoFilterBackend, filters.SearchFilter,)
 
-    def get_serializer_context(self):
-        return {'request': self.request}
+    #def get_queryset(self):
+    #    pass  # Filter queryset according to user
