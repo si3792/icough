@@ -18,6 +18,16 @@
                         <span class='glyphicon glyphicon-home'></span>
                         Home</a>
                 </li>
+                <li ng-class='{active: curLocation == "/request-appointment"}' ng-hide='isDoctor'>
+                    <a cd-location-changer='/request-appointment'>
+                        <span class='glyphicon glyphicon-plus'></span>
+                        Request Appointment</a>
+                </li>
+                <li ng-class='{active: curLocation == "/review-requests"}' ng-show='isDoctor'>
+                    <a cd-location-changer='/review-requests'>
+                        <span class='glyphicon glyphicon-pencil'></span>
+                        Review requests</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-class='{active: curLocation == "/settings"}'>
