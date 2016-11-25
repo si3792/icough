@@ -28,6 +28,11 @@
                         <span class='glyphicon glyphicon-pencil'></span>
                         Review requests</a>
                 </li>
+                <li ng-class='{active: curLocation == "/appointment-history"}'>
+                    <a cd-location-changer='/appointment-history'>
+                        <span class='glyphicon glyphicon-folder-open'></span>
+                         History</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-class='{active: curLocation == "/settings"}'>
