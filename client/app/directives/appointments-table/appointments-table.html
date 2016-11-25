@@ -16,27 +16,19 @@
               </h4>
           </td>
           <td>
-              <h4>
-                  Time of Appointment
-              </h4>
-          </td>
-          <td>
               <h4>Status</h4>
           </td>
           <td>
-              <h4>Created</h4>
-          </td>
-          <td>
-              <h4>Created</h4>
+              <h4>Requested</h4>
           </td>
       </tr>
       <tr ng-repeat='appointment in appointmentsData'>
           <td ng-hide='isDoctor'>Dr. {{ appointment.doctor.first_name + " "  + appointment.doctor.last_name}}</td>
           <td ng-show='isDoctor'>{{ appointment.patient.first_name + " "  + appointment.patient.last_name }}</td>
-          <td>{{ appointment.time | date : 'MMM d, y, h:mm a' }}</td>
-          <td><span am-time-ago="appointment.time"></span></td>
-          <td>{{appointment.state}}</td>
-          <td>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
-          <td><span am-time-ago="appointment.created"></span></td>
+          <td ng-hide='displayRelative(appointment.time)'>{{ appointment.time | date : 'MMM d, y, h:mm a' }}</td>
+          <td ng-show='displayRelative(appointment.time)' data-toggle="tooltip" title="{{ appointment.time | date : 'MMM d, y, h:mm a'}}"><span am-time-ago="appointment.time"></span></td>
+          <td>{{getAppointmentStateName(appointment.state)}}</td>
+          <td ng-hide='displayRelative(appointment.created)'>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
+          <td ng-show='displayRelative(appointment.created)' data-toggle="tooltip" title="{{ appointment.created | date : 'MMM d, y, h:mm a'}}"><span am-time-ago="appointment.created"></span></td>
       </tr>
   </table>
