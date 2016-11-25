@@ -42,7 +42,8 @@ app.config(['$routeProvider', function($routeProvider) {
     window.routes = {
         "/login": Route('views/login.html', false),
         "/home": Route('views/home.html', true),
-        "/register": Route('views/register.html', false)
+        "/register": Route('views/register.html', false),
+        "/settings": Route('views/settings.html', true)
     };
 
     //this loads up our routes dynamically from window.routes

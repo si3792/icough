@@ -1,0 +1,42 @@
+<table class="table-hover table table-custom">
+      <tr>
+          <td>
+              <h4>
+                  Doctor
+              </h4>
+          </td>
+          <td>
+              <h4>
+                  Patient
+              </h4>
+          </td>
+          <td>
+              <h4>
+                  Time of Appointment
+              </h4>
+          </td>
+          <td>
+              <h4>
+                  Time of Appointment
+              </h4>
+          </td>
+          <td>
+              <h4>Status</h4>
+          </td>
+          <td>
+              <h4>Created</h4>
+          </td>
+          <td>
+              <h4>Created</h4>
+          </td>
+      </tr>
+      <tr ng-repeat='appointment in appointmentsData'>
+          <td>{{ appointment.doctor }}</td>
+          <td>{{ appointment.patient }}</td>
+          <td>{{ appointment.time | date : 'MMM d, y, h:mm a' }}</td>
+          <td><span am-time-ago="appointment.time"></span></td>
+          <td>{{appointment.state}}</td>
+          <td>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
+          <td><span am-time-ago="appointment.created"></span></td>
+      </tr>
+  </table>

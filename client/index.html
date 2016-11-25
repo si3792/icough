@@ -15,6 +15,8 @@
         <script src="node_modules/angular-oauth2/dist/angular-oauth2.min.js"></script>
         <script src="node_modules/angular-resource/angular-resource.min.js"></script>
         <script src="node_modules/angular-cookies/angular-cookies.min.js"></script>
+        <script src="node_modules/moment/moment.js"></script>
+        <script src="node_modules/angular-moment/angular-moment.js"></script>
 
         <!-- Google sign-in -->
         <script src="https://apis.google.com/js/client:platform.js" async defer></script>
@@ -39,6 +41,8 @@
         <script src="app/directives/password-panel/password-panel.js"></script>
         <script src="app/directives/account-panel/account-panel.js"></script>
         <script src="app/directives/delete-account-panel/delete-account-panel.js"></script>
+        <script src="app/directives/appointments-table/appointments-table.js"></script>
+        <script src="app/directives/navbar/navbar.js"></script>
 
         <!-- css -->
         <link href="styles/custom.css" rel="stylesheet">
@@ -53,6 +57,8 @@
         <ng-include src='"views/header.html"'></ng-include>
 
         <div class='container'>
+            <cd-navbar></cd-navbar>
+            
             <!-- Main view -->
             <div ng-view></div>
         </div>
