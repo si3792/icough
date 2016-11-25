@@ -8,6 +8,11 @@ app.directive('cdAppointmentsTable', function() {
 
           $scope.appointmentsData = AccountService.appointments.query();
 
+          $scope.isDoctor = false;
+          AccountService.isDoctor().then(function(response){
+            $scope.isDoctor = response;
+          });
+
         }]
     }
 });

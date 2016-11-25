@@ -1,11 +1,11 @@
 <table class="table-hover table table-custom">
       <tr>
-          <td>
-              <h4>
+          <td ng-hide='isDoctor'>
+              <h4 >
                   Doctor
               </h4>
           </td>
-          <td>
+          <td ng-show='isDoctor'>
               <h4>
                   Patient
               </h4>
@@ -31,8 +31,8 @@
           </td>
       </tr>
       <tr ng-repeat='appointment in appointmentsData'>
-          <td>{{ appointment.doctor }}</td>
-          <td>{{ appointment.patient }}</td>
+          <td ng-hide='isDoctor'>Dr. {{ appointment.doctor.first_name + " "  + appointment.doctor.last_name}}</td>
+          <td ng-show='isDoctor'>{{ appointment.patient.first_name + " "  + appointment.patient.last_name }}</td>
           <td>{{ appointment.time | date : 'MMM d, y, h:mm a' }}</td>
           <td><span am-time-ago="appointment.time"></span></td>
           <td>{{appointment.state}}</td>
