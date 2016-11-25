@@ -130,6 +130,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'social.apps.django_app.default',
     'rest_framework_social_oauth2',
+    'icough'
 ]
 
 MIDDLEWARE = [
