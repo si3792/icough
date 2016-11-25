@@ -14,6 +14,11 @@ app.directive('cdAccountPanel', function() {
             $scope.accountData = AccountService.account.get();
             $scope.newAccountData = {};
 
+            $scope.isDoctor = false;
+            AccountService.isDoctor().then(function(response){
+              $scope.isDoctor = response;
+            });
+
             $scope.readOnlyAccount = true;
             AccountService.social.get({}, function(response){
               $scope.readOnlyAccount = true;
