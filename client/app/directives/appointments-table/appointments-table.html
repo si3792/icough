@@ -4,15 +4,15 @@
     <tr>
         <td ng-hide='isDoctor' ng-click='setOrdering("doctor")'>
             <h4 >
-              <span ng-show='queryParams.ordering=="doctor"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-              <span ng-show='queryParams.ordering=="-doctor"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-              <b>Doctor</b>
+                <span ng-show='queryParams.ordering=="doctor"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-doctor"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Doctor</b>
             </h4>
         </td>
         <td ng-show='isDoctor' ng-click='setOrdering("patient")'>
             <h4>
-              <span ng-show='queryParams.ordering=="patient"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-              <span ng-show='queryParams.ordering=="-patient"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="patient"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-patient"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 <b>Patient</b>
             </h4>
         </td>
@@ -24,17 +24,20 @@
             </h4>
         </td>
         <td>
-            <h4><b>Status</b></h4>
+            <h4>
+                <b>Status</b>
+            </h4>
         </td>
         <td ng-click='setOrdering("created")'>
             <h4>
-              <span ng-show='queryParams.ordering=="created"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-              <span ng-show='queryParams.ordering=="-created"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-              <b>Requested</b></h4>
+                <span ng-show='queryParams.ordering=="created"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-created"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Requested</b>
+            </h4>
         </td>
     </tr>
 
-    <tr ng-repeat='appointment in appointmentsData'>
+    <tr ng-repeat='appointment in appointmentsData.results'>
         <td ng-hide='isDoctor'>Dr.
             {{ appointment.doctor.first_name + " "  + appointment.doctor.last_name}}</td>
         <td ng-show='isDoctor'>{{ appointment.patient.first_name + " "  + appointment.patient.last_name }}</td>
@@ -49,3 +52,18 @@
         </td>
     </tr>
 </table>
+
+<nav aria-label="...">
+    <ul class="pager">
+        <li ng-click='flipPage(false)' ng-class='{disabled: appointmentsData.previous == null}'>
+            <a>Previous</a>
+        </li>
+        <li class='disabled'>
+            <a class='h4'><b>Page
+                {{queryParams.page}}</b></a>
+        </li>
+        <li ng-click='flipPage(true)' ng-class='{disabled: appointmentsData.next == null}'>
+            <a>Next</a>
+        </li>
+    </ul>
+</nav>

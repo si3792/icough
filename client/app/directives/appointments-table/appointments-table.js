@@ -7,8 +7,9 @@ app.directive('cdAppointmentsTable', function() {
         controller: ['$scope', 'AccountService', function($scope, AccountService) {
 
             $scope.queryParams = {
-              //state: 'P',
-              ordering: '-time'
+                //state: 'P',
+                ordering: '-time',
+                page: 1
             };
 
             $scope.RELATIVE_DATE_CUTOFF_MINUTES = 600;
@@ -19,7 +20,7 @@ app.directive('cdAppointmentsTable', function() {
             });
 
             $scope.refreshData = function() {
-              $scope.appointmentsData = AccountService.appointments.query($scope.queryParams);
+                $scope.appointmentsData = AccountService.appointments.get($scope.queryParams);
             }
             $scope.refreshData();
 
@@ -36,22 +37,35 @@ app.directive('cdAppointmentsTable', function() {
              *    as an absolute or relative to the current time.
              */
             $scope.displayRelative = function(time) {
-                if ( Math.abs($scope.calculateDifference(moment(), time)) > $scope.RELATIVE_DATE_CUTOFF_MINUTES) return false;
+                if (Math.abs($scope.calculateDifference(moment(), time)) > $scope.RELATIVE_DATE_CUTOFF_MINUTES) return false;
                 return true;
             }
 
             $scope.getAppointmentStateName = function(state) {
-              if(state == 'D') return 'Declined';
-              if(state == 'A') return 'Approved';
-              return 'Pending';
+                if (state == 'D') return 'Declined';
+                if (state == 'A') return 'Approved';
+                return 'Pending';
             }
 
             $scope.setOrdering = function(order) {
-              if($scope.queryParams.ordering == order) {
-                  $scope.queryParams.ordering = "-" + order;
-              }
-              else  $scope.queryParams.ordering = order;
+                if ($scope.queryParams.ordering == order) {
+                    $scope.queryParams.ordering = "-" + order;
+                } else $scope.queryParams.ordering = order;
+
+                $scope.queryParams.page = 1;
                 $scope.refreshData();
+            }
+
+            $scope.flipPage = function(flipForward) {
+
+                if (flipForward && $scope.appointmentsData.next != null) {
+                    $scope.queryParams.page += 1;
+                    $scope.refreshData();
+                } else if (!flipForward && $scope.appointmentsData.previous != null) {
+                    $scope.queryParams.page -= 1;
+                    $scope.refreshData();
+                }
+
             }
 
         }]
