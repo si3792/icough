@@ -2,13 +2,17 @@
 <table class="table-hover table table-custom">
 
     <tr>
-        <td ng-hide='isDoctor'>
+        <td ng-hide='isDoctor' ng-click='setOrdering("doctor")'>
             <h4 >
+              <span ng-show='queryParams.ordering=="doctor"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+              <span ng-show='queryParams.ordering=="-doctor"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
               <b>Doctor</b>
             </h4>
         </td>
-        <td ng-show='isDoctor'>
+        <td ng-show='isDoctor' ng-click='setOrdering("patient")'>
             <h4>
+              <span ng-show='queryParams.ordering=="patient"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+              <span ng-show='queryParams.ordering=="-patient"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                 <b>Patient</b>
             </h4>
         </td>

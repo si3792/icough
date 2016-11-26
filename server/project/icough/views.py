@@ -13,9 +13,9 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     serializer_class = AppointmentSerializer
     filter_fields = ('state', 'doctor')
     search_fields = ('doctor', 'patient')
-    ordering_fields = ('created', 'time')
+    ordering_fields = ('created', 'time', 'patient', 'doctor')
     filter_backends = (filters.OrderingFilter,
                        filters.DjangoFilterBackend, filters.SearchFilter,)
 
-    #def get_queryset(self):
+    # def get_queryset(self):
     #    pass  # Filter queryset according to user
