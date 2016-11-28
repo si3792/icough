@@ -1,16 +1,24 @@
 from .serializers import AppointmentSerializer, DoctorOrPatientSerializer
 from .models import Appointment
 from rest_framework.permissions import AllowAny
-from rest_framework import viewsets
 from rest_framework import filters
-from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.response import Response
+from rest_framework import viewsets
+from rest_framework import generics
+from rest_framework import mixins
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 
-class AppointmentViewSet(viewsets.ModelViewSet):
+class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
-    API endpoint that allows Appointments to be viewed or edited.
+    API endpoint that allows Appointments to be viewed, created or updated.
+
+    GET returns a list of appointments where
+    (a) patient = current user, if user is a patient
+    (b) doctor = current user, if user is a doctor
+
+    POST expects a doctor object field, as well as time field
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -20,21 +28,39 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.OrderingFilter,
                        filters.DjangoFilterBackend, filters.SearchFilter,)
 
-    # def get_queryset(self):
-    #    pass  # Filter queryset according to user
+    def get_queryset(self):
+        isDoctor = User.objects.filter(username=self.request.user.username).filter(
+            groups__name__in=['doctors'])
+        if isDoctor:
+            return Appointment.objects.filter(doctor=self.request.user)
+        return Appointment.objects.filter(patient=self.request.user)
+
+    def create(self, request):
+        doctor = User.objects.all().filter(
+            username=(request.data['doctor'].get('username')))
+        if not doctor:
+            return Response({'message': 'Could not retrieve doctor'}, status=HTTP_400_BAD_REQUEST)
+        doctor = doctor[0]
+
+        serializer = AppointmentSerializer(data={
+            'time': request.data['time']
+        }, context={
+            'patient': request.user,
+            'doctor': doctor
+        })
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=HTTP_201_CREATED)
 
 
-class DoctorsListView(APIView):
+class DoctorsListView(generics.ListAPIView):
     """
     API endpoint for fetching a list of doctors
 
     GET returns an array of doctors
     """
-    permission_classes = (AllowAny,)
 
-    def get(self, request):
-
-        queryset = User.objects.filter(groups__name__in=['doctors'])
-        serializer = DoctorOrPatientSerializer(queryset, many=True)
-
-        return Response(serializer.data)
+    queryset = User.objects.filter(groups__name__in=['doctors'])
+    serializer_class = DoctorOrPatientSerializer
+    pagination_class = None

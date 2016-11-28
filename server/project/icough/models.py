@@ -12,7 +12,7 @@ class Appointment(models.Model):
     )
     time = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
-    state = models.CharField(max_length=1, choices=APPOINTMENT_STATES)
+    state = models.CharField(max_length=1, choices=APPOINTMENT_STATES, default='P')
     patient = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, related_name='appointment_patient')
     doctor = models.ForeignKey(

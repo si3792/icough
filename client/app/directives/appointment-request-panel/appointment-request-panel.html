@@ -7,17 +7,17 @@
             <form name='appointmentRequestForm'>
                 <div class='form-group'>
                     <label>
-                        <h4>Choose a day:</h4>
+                        <h4>Choose a day</h4>
                     </label>
                     <div>
                         <div style="display:inline-block; min-height:290px;">
-                            <div uib-datepicker ng-model="date" class="well well-sm" datepicker-options="datepickerOptions"></div>
+                            <div uib-datepicker ng-required='true' ng-change='changed()'  ng-model="date" class="well well-sm" datepicker-options="datepickerOptions"></div>
                         </div>
                     </div>
                 </div>
                 <div class='form-group'>
                     <label>
-                        <h4>Select time slot:</h4>
+                        <h4>Select time slot</h4>
                     </label>
                     <div>
                         <div style="display:inline-block">
@@ -27,9 +27,9 @@
                 </div>
                 <div class='form-group'>
                     <label>
-                        <h4>Pick a doctor</h4>
+                        <h4>Select a doctor</h4>
                     </label>
-                    <select class='form-control' ng-options="doctor as ('Dr. ' + doctor.first_name + ' ' + doctor.last_name) for doctor in doctors track by doctor.id" ng-model="doctor"></select>
+                    <select ng-required='true' class='form-control' ng-options="doctor as ('Dr. ' + doctor.first_name + ' ' + doctor.last_name) for doctor in doctors track by doctor.id" ng-model="doctor"></select>
                 </div>
                 <div class='well, well-sm lead'>
                     <h4>Request details:
@@ -38,11 +38,11 @@
                     {{ doctor.first_name + " " + doctor.last_name }}
                     <br/>
                     Time:
-                    {{date.toString().substr(0,16) + time.toString().substr(16,40) | amDateFormat:'MMM Do YYYY, h:mm a' }}
+                    {{ datetime | amDateFormat:'MMM Do YYYY, h:mm a' }}
                 </div>
 
                 <div class='text-center'>
-                    <button class="btn btn-primary btn-lg" ng-disabled='appointmentRequestForm.$invalid'>Submit request</button>
+                    <button class="btn btn-primary btn-lg" ng-click='requestAppointment()' ng-disabled='appointmentRequestForm.$invalid'>Submit request</button>
                 </div>
             </div>
         </div>
