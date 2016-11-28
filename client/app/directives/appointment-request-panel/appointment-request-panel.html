@@ -29,13 +29,13 @@
                     <label>
                         <h4>Pick a doctor</h4>
                     </label>
-                    <select class='form-control' ng-options="doctor as ('Dr. ' + doctor.name) for doctor in doctors track by doctor.id" ng-model="doctor"></select>
+                    <select class='form-control' ng-options="doctor as ('Dr. ' + doctor.first_name + ' ' + doctor.last_name) for doctor in doctors track by doctor.id" ng-model="doctor"></select>
                 </div>
                 <div class='well, well-sm lead'>
                     <h4>Request details:
                     </h4>
                     Doctor:
-                    {{ doctor.name }}
+                    {{ doctor.first_name + " " + doctor.last_name }}
                     <br/>
                     Time:
                     {{date.toString().substr(0,16) + time.toString().substr(16,40) | amDateFormat:'MMM Do YYYY, h:mm a' }}

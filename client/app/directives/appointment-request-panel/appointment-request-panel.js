@@ -4,7 +4,7 @@ app.directive('cdAppointmentRequestPanel', function() {
     return {
         restrict: 'E',
         templateUrl: 'app/directives/appointment-request-panel/appointment-request-panel.html',
-        controller: ['$scope', 'AccountService', function($scope, AccountService) {
+        controller: ['$scope', 'AccountService', 'DoctorsService', function($scope, AccountService, DoctorsService) {
 
             $scope.hstep = 1;
             $scope.mstep = 30;
@@ -13,13 +13,7 @@ app.directive('cdAppointmentRequestPanel', function() {
             $scope.date;
             $scope.doctor;
 
-            $scope.doctors = [{
-                id: 1,
-                name: "Gregory House"
-            }, {
-              id: 2,
-              name: "Hippocrates"
-            }];
+            $scope.doctors = DoctorsService.doctors.query();
 
             $scope.datepickerOptions = {
                 minDate: new Date(),

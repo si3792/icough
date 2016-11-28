@@ -6,5 +6,6 @@ router = routers.DefaultRouter()
 router.register(r'appointments', views.AppointmentViewSet)
 
 urlpatterns = [
+    url(r'^doctors/', views.DoctorsListView.as_view()),
     url(r'^', include(router.urls))
 ]

@@ -8,6 +8,7 @@ class DoctorOrPatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name')
+        read_only_fields = ('id', 'first_name', 'last_name')
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
