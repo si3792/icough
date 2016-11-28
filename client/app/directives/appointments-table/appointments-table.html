@@ -45,7 +45,7 @@
         <td ng-show='displayRelative(appointment.time)' data-toggle="tooltip" title="{{ appointment.time | date : 'MMM d, y, h:mm a'}}">
             <span am-time-ago="appointment.time"></span>
         </td>
-        <td>{{getAppointmentStateName(appointment.state)}}</td>
+        <td ng-click='updateAppointment(appointment)'>{{getAppointmentStateName(appointment.state)}}</td>
         <td ng-hide='displayRelative(appointment.created)'>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
         <td ng-show='displayRelative(appointment.created)' data-toggle="tooltip" title="{{ appointment.created | date : 'MMM d, y, h:mm a'}}">
             <span am-time-ago="appointment.created"></span>

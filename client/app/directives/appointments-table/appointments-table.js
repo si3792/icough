@@ -12,6 +12,7 @@ app.directive('cdAppointmentsTable', function() {
                 page: 1
             };
 
+
             $scope.RELATIVE_DATE_CUTOFF_MINUTES = 600;
 
             $scope.isDoctor = false;
@@ -23,6 +24,15 @@ app.directive('cdAppointmentsTable', function() {
                 $scope.appointmentsData = AccountService.appointments.get($scope.queryParams);
             }
             $scope.refreshData();
+
+            $scope.updateAppointment = function(appointment) {
+                DEBUG && console.log(appointment);
+                appointment.state = 'D';
+                AccountService.appointments.update({appId: appointment.id}, appointment, function(response) {
+                    $scope.refreshData();
+                });
+            }
+
 
             /**
              *    Function to calculate difference between two dates

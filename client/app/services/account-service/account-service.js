@@ -9,7 +9,13 @@ app.factory('AccountService', function($resource, $q, CONSTANTS) {
         account: $resource(CONSTANTS.BASE_URL + '/account/'),
         password: $resource(CONSTANTS.BASE_URL + '/account/password/'),
         social: $resource(CONSTANTS.BASE_URL + '/account/social/'),
-        appointments: $resource(CONSTANTS.BASE_URL + '/icough/appointments/'),
+        appointments: $resource(CONSTANTS.BASE_URL + '/icough/appointments/:appId/', {
+            appId: '@id'
+        }, {
+            'update': {
+                method: 'PUT'
+            }
+        }),
         isDoctor: function() {
             var deferred = $q.defer();
 

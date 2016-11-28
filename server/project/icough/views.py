@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -18,7 +18,9 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     (a) patient = current user, if user is a patient
     (b) doctor = current user, if user is a doctor
 
-    POST expects a doctor object field, as well as time field
+    POST expects a doctor object field, as well as time
+
+    PUT expects a state field
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -52,6 +54,13 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=HTTP_201_CREATED)
+
+    def update(self, request, pk):
+
+        appointment = Appointment.objects.all().filter(pk=pk)[0]
+        appointment.state = request.data['state']
+        appointment.save()
+        return Response(status=HTTP_200_OK)
 
 
 class DoctorsListView(generics.ListAPIView):
