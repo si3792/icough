@@ -4,7 +4,32 @@ app.directive('cdAppointmentRequestPanel', function() {
     return {
         restrict: 'E',
         templateUrl: 'app/directives/appointment-request-panel/appointment-request-panel.html',
-        controller: ['$scope', 'AccountService', 'AlertModalService', 'CONSTANTS', function($scope, AccountService) {
+        controller: ['$scope', 'AccountService', function($scope, AccountService) {
+
+            $scope.hstep = 1;
+            $scope.mstep = 30;
+            $scope.time = new Date();
+            $scope.time.setMinutes(0);
+            $scope.date;
+            $scope.doctor;
+
+            $scope.doctors = [{
+                id: 1,
+                name: "Gregory House"
+            }, {
+              id: 2,
+              name: "Hippocrates"
+            }];
+
+            $scope.datepickerOptions = {
+                minDate: new Date(),
+                showWeeks: true
+            };
+
+            $scope.changed = function() {
+                DEBUG && console.log('Time changed to: ' + $scope.time);
+            };
+
 
             $scope.isDoctor = false;
             AccountService.isDoctor().then(function(response) {

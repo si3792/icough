@@ -25,6 +25,8 @@ module.exports = function(config) {
             'node_modules/angular-modal-service/dst/angular-modal-service.js',
             'node_modules/moment/moment.js',
             'node_modules/angular-moment/angular-moment.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
             'app/**/*.js',
             'app/**/*.html'
         ],
