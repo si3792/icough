@@ -17,9 +17,13 @@ app.directive('cdNavbar', [function() {
                 $scope.isDoctor = response;
             });
 
+            $scope.curLocation = $location.path();
+
             /* Recheck data on route change */
             $scope.$on('$routeChangeSuccess', function(event, current) {
                 $scope.showNavbar = AuthService.isAuthenticated();
+
+                $scope.curLocation = $location.path();
 
                 AccountService.isDoctor().then(function(response) {
                     $scope.isDoctor = response;
