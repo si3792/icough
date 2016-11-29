@@ -26,7 +26,7 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     serializer_class = AppointmentSerializer
     filter_fields = ('state', 'doctor')
     search_fields = ('doctor', 'patient')
-    ordering_fields = ('created', 'time', 'patient', 'doctor')
+    ordering_fields = ('created', 'time', 'patient', 'doctor', 'state')
     filter_backends = (filters.OrderingFilter,
                        filters.DjangoFilterBackend, filters.SearchFilter,)
 
