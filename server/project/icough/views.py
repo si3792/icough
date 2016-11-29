@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
+import datetime
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -25,7 +26,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
     filter_fields = ('state', 'doctor')
-    search_fields = ('doctor__first_name', 'doctor__last_name', 'patient__first_name', 'patient__last_name')
+    search_fields = ('doctor__first_name', 'doctor__last_name',
+                     'patient__first_name', 'patient__last_name')
     ordering_fields = ('created', 'time', 'patient', 'doctor', 'state')
     filter_backends = (filters.OrderingFilter,
                        filters.DjangoFilterBackend, filters.SearchFilter,)
@@ -33,9 +35,11 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     def get_queryset(self):
         isDoctor = User.objects.filter(username=self.request.user.username).filter(
             groups__name__in=['doctors'])
+
+        appointments = Appointment.objects.filter(time__gte=datetime.datetime.now())
         if isDoctor:
-            return Appointment.objects.filter(doctor=self.request.user)
-        return Appointment.objects.filter(patient=self.request.user)
+            return appointments.filter(doctor=self.request.user)
+        return appointments.filter(patient=self.request.user)
 
     def create(self, request):
         doctor = User.objects.all().filter(

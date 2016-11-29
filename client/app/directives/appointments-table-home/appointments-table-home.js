@@ -10,7 +10,7 @@ app.directive('cdAppointmentsTableHome', function() {
 
             $scope.queryParams = {
                 //state: 'P',
-                ordering: '-time',
+                ordering: 'time',
                 page: 1
             };
 
