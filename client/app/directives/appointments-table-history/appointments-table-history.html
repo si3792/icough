@@ -1,0 +1,73 @@
+<table class="table-hover table table-custom">
+
+    <tr>
+        <td ng-show='isDoctor===false' ng-click='setOrdering("doctor")'>
+            <h4 >
+                <span ng-show='queryParams.ordering=="doctor"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-doctor"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Doctor</b>
+            </h4>
+        </td>
+        <td ng-show='isDoctor===true' ng-click='setOrdering("patient")'>
+            <h4>
+                <span ng-show='queryParams.ordering=="patient"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-patient"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Patient</b>
+            </h4>
+        </td>
+        <td ng-click='setOrdering("time")'>
+            <h4>
+                <span ng-show='queryParams.ordering=="time"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-time"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Time of Appointment</b>
+            </h4>
+        </td>
+        <td ng-click='setOrdering("state")'>
+            <h4>
+                <span ng-show='queryParams.ordering=="state"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-state"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Status</b>
+            </h4>
+        </td>
+        <td ng-click='setOrdering("created")'>
+            <h4>
+                <span ng-show='queryParams.ordering=="created"' class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+                <span ng-show='queryParams.ordering=="-created"' class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+                <b>Requested</b>
+            </h4>
+        </td>
+    </tr>
+
+    <tr ng-repeat='appointment in appointmentsData.results'>
+        <td ng-show='isDoctor===false'>Dr.
+            {{ appointment.doctor.first_name + " "  + appointment.doctor.last_name}}</td>
+        <td ng-show='isDoctor===true'>{{ appointment.patient.first_name + " "  + appointment.patient.last_name }}</td>
+        <td ng-hide='displayRelative(appointment.time)'>{{ appointment.time | date : 'MMM d, y, h:mm a' }}</td>
+        <td ng-show='displayRelative(appointment.time)' data-toggle="tooltip" title="{{ appointment.time | date : 'MMM d, y, h:mm a'}}">
+            <span am-time-ago="appointment.time"></span>
+        </td>
+        <td ng-class='{"bg-danger": appointment.state == "D", "bg-warning": appointment.state == "P", "bg-success": appointment.state == "A"}'>
+            {{getAppointmentStateName(appointment.state)}}</td>
+        <td ng-hide='displayRelative(appointment.created)'>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
+        <td ng-show='displayRelative(appointment.created)' data-toggle="tooltip" title="{{ appointment.created | date : 'MMM d, y, h:mm a'}}">
+            <span am-time-ago="appointment.created"></span>
+        </td>
+    </tr>
+</table>
+
+<nav aria-label="...">
+    <ul class="pager">
+        <li ng-click='flipPage(false)' ng-class='{disabled: appointmentsData.previous == null}'>
+            <a>Previous</a>
+        </li>
+        <li class='disabled'>
+            <a class='h4'>
+                <b>Page
+                    {{queryParams.page}}</b>
+            </a>
+        </li>
+        <li ng-click='flipPage(true)' ng-class='{disabled: appointmentsData.next == null}'>
+            <a>Next</a>
+        </li>
+    </ul>
+</nav>
