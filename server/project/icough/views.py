@@ -21,7 +21,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
 
     POST expects a doctor object field, as well as time
 
-    PUT expects a state field
+    PUT expects a state field if appointment is pending
+    PUT expects a time field if appointment is declined
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -61,11 +62,20 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         return Response(status=HTTP_201_CREATED)
 
     def update(self, request, pk):
-
+        # @TODO add permission checking for doctor and patient
         appointment = Appointment.objects.all().filter(pk=pk)[0]
-        appointment.state = request.data['state']
-        appointment.save()
-        return Response(status=HTTP_200_OK)
+
+        if appointment.state == 'P':
+            appointment.state = request.data['state']
+            appointment.save()
+            return Response(status=HTTP_200_OK)
+        elif appointment.state == 'D':
+            appointment.time == request.data['time']
+            appointment.save()
+            return Response(status=HTTP_200_OK)
+        return Response(status=HTTP_400_BAD_REQUEST)
+
+
 
 
 class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
