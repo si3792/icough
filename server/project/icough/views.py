@@ -70,7 +70,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
             appointment.save()
             return Response(status=HTTP_200_OK)
         elif appointment.state == 'D':
-            appointment.time == request.data['time']
+            appointment.time = request.data['time']
+            appointment.state = 'P'
             appointment.save()
             return Response(status=HTTP_200_OK)
         return Response(status=HTTP_400_BAD_REQUEST)

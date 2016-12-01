@@ -40,7 +40,7 @@
         </td>
     </tr>
 
-    <tr ng-repeat='appointment in appointmentsData.results'>
+    <tr ng-repeat='appointment in appointmentsData.results' ng-show='fullTable'>
         <td ng-show='isDoctor===false'>Dr.
             {{ appointment.doctor.first_name + " "  + appointment.doctor.last_name}}</td>
         <td ng-show='isDoctor===true'>{{ appointment.patient.first_name + " "  + appointment.patient.last_name }}</td>
@@ -49,15 +49,70 @@
             <span am-time-ago="appointment.time"></span>
         </td>
         <td ng-show='isDoctor===false' ng-class='{"bg-danger": appointment.state == "D", "bg-warning": appointment.state == "P", "bg-success": appointment.state == "A"}'>
-            {{getAppointmentStateName(appointment.state)}}</td>
+            <div ng-hide='appointment.state=="D"'>{{getAppointmentStateName(appointment.state)}}</div>
+            <div ng-show='appointment.state=="D"'>
+              <button class='btn btn-sm btn-danger' ng-click='selectAppointment(appointment)'>Declined</button>
+            </div>
+        </td>
         <td ng-hide='displayRelative(appointment.created)'>{{ appointment.created | date : 'MMM d, y, h:mm a' }}</td>
         <td ng-show='displayRelative(appointment.created)' data-toggle="tooltip" title="{{ appointment.created | date : 'MMM d, y, h:mm a'}}">
             <span am-time-ago="appointment.created"></span>
         </td>
+
     </tr>
+
+    <tr ng-hide='fullTable' class='bg-danger'>
+        <td>Dr.
+            {{ selectedAppointment.doctor.first_name + " "  + selectedAppointment.doctor.last_name}}</td>
+        <td ng-hide='displayRelative(selectedAppointment.time)'>{{ selectedAppointment.time | date : 'MMM d, y, h:mm a' }}</td>
+        <td ng-show='displayRelative(selectedAppointment.time)' data-toggle="tooltip" title="{{ selectedAppointment.time | date : 'MMM d, y, h:mm a'}}">
+            <span am-time-ago="selectedAppointment.time"></span>
+        </td>
+        <td class='bg-danger'>
+            <button class='btn btn-sm btn-danger' ng-click='clearAppointmentSelection()'>Declined</button>
+        </td>
+        <td ng-hide='displayRelative(selectedAppointment.created)'>{{ selectedAppointment.created | date : 'MMM d, y, h:mm a' }}</td>
+        <td ng-show='displayRelative(selectedAppointment.created)' data-toggle="tooltip" title="{{ selectedAppointment.created | date : 'MMM d, y, h:mm a'}}">
+            <span am-time-ago="selectedAppointment.created"></span>
+        </td>
+    </tr>
+
 </table>
 
-<nav aria-label="...">
+<div ng-hide='fullTable' class='well'>
+  <form name='appointmentRescheduleForm' class='container'>
+      <div class='form-group text-center col-sm-6'>
+          <label>
+              <h4>Choose new date</h4>
+          </label>
+          <div>
+              <div style="display:inline-block; min-height:290px; margin:auto;">
+                  <div uib-datepicker ng-required='true' ng-change='changed()' ng-model="date" class="well well-sm" datepicker-options="datepickerOptions"></div>
+              </div>
+          </div>
+      </div>
+      <div class='form-group text-center col-sm-6'>
+          <label>
+              <h4>Pick new time slot</h4>
+          </label>
+          <div>
+              <div style="display:inline-block">
+                  <div class='well well-sm' uib-timepicker ng-model="time" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="true"></div>
+              </div>
+          </div>
+      </div>
+      <hr />
+  </form>
+  <div class='container'>
+    <div class='col-sm-6 col-sm-offset-3'>
+      <button class='btn btn-lg btn-info btn-block' ng-click='submitAppointmentReschedule()' ng-disabled='appointmentRescheduleForm.$invalid'> Submit reschedule request </button>
+    </div>
+  </div>
+
+
+</div>
+
+<nav aria-label="..." ng-show='fullTable'>
     <ul class="pager">
         <li ng-click='flipPage(false)' ng-class='{disabled: appointmentsData.previous == null}'>
             <a>Previous</a>
