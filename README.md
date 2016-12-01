@@ -13,10 +13,10 @@ a) If request comes from a patient, appointments where patient = user are return
 b) If request comes from a doctor, appointments where doctor = user are returned.  
 
 **POST** expects a a `time` field as well as `doctor` object field.  
-( Doctor objects are retrieved from /icough/doctors/ )
+( Doctor objects are retrieved from `/icough/doctors/` )
 
-**PUT** is used to update appointment at /icough/appointments/id/  where:
-a) If the request comes from a doctor `state` field is expected, containing either 'A' or 'D'.  
+**PUT** is used to update appointment at `/icough/appointments/id/`  where:  
+a) If the request comes from a doctor `state` field is expected.  
 b) If the request comes from a patient, `time` field is expected.
 
 ### /icough/history/
