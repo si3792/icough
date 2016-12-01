@@ -84,9 +84,17 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
             groups__name__in=['doctors'])
 
         appointment = Appointment.objects.all().filter(
-            pk=pk)[0]  # @TODO check if appointment is None
+            pk=pk)
+
+        if appointment:
+            appointment = appointment[0]
+        else:
+            return Response({'message': 'Invalid pk'}, status=HTTP_400_BAD_REQUEST)
 
         if isDoctor:
+            if appointment.doctor != request.user:
+                return Response(status=HTTP_403_FORBIDDEN)
+
             if appointment.state != 'P':
                 return Response({'message': 'Only PENDING appointments can be updated'}, status=HTTP_403_FORBIDDEN)
 
@@ -98,6 +106,9 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
             return Response(status=HTTP_200_OK)
 
         else:
+            if appointment.patient != request.user:
+                return Response(status=HTTP_403_FORBIDDEN)
+
             if appointment.state != 'D':
                 return Response({'message': 'Only DECLINED appointments can be rescheduled'}, status=HTTP_403_FORBIDDEN)
 
