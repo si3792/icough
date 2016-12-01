@@ -10,6 +10,7 @@ from rest_framework import mixins
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_403_FORBIDDEN
 from django.utils import timezone
 from icough.appointment_utilities import isClashing, isExpired
+from django.utils.dateparse import parse_datetime
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -103,6 +104,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
             newTime = request.data.get('time', None)
             if newTime is None:
                 return Response({'message': 'Missing time field'}, status=HTTP_400_BAD_REQUEST)
+
+            newTime = parse_datetime(newTime)  # convert from string
 
             if isExpired(newTime):
                 return Response({'message': 'Invalid appointment time'}, status=HTTP_400_BAD_REQUEST)
