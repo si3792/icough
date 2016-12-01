@@ -16,7 +16,7 @@ API endpoint for Appointments
 ( Doctor objects are retrieved from `/icough/doctors/` )
 
 **PUT** is used to update appointment at `/icough/appointments/id/`  where:  
-- If the request comes from a doctor `state` field is expected.  
+- If the request comes from a doctor, `state` field is expected.  
 - If the request comes from a patient, `time` field is expected.
 
 ### /icough/history/
