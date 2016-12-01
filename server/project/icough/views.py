@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_403_FORBIDDEN
 from django.utils import timezone
 from icough.appointment_utilities import isClashing, isExpired
 
@@ -47,10 +47,16 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         return appointments.filter(patient=self.request.user)
 
     def create(self, request):
+
+        isDoctor = User.objects.filter(username=self.request.user.username).filter(
+            groups__name__in=['doctors'])
+        if isDoctor:
+            return Response({'message': 'Only patients can request appointments'}, status=HTTP_403_FORBIDDEN)
+
         doctor = User.objects.all().filter(
-            username=(request.data['doctor'].get('username')))
+            username=(request.data['doctor'].get('username', None)))
         if not doctor:
-            return Response({'message': 'Could not retrieve doctor'}, status=HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Invalid doctor field'}, status=HTTP_400_BAD_REQUEST)
         doctor = doctor[0]
 
         serializer = AppointmentSerializer(data={
@@ -62,26 +68,53 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
 
         serializer.is_valid(raise_exception=True)
 
+        if isExpired(serializer.validated_data['time']):
+            return Response({'message': 'Invalid appointment time'}, status=HTTP_400_BAD_REQUEST)
+
         if isClashing(serializer.validated_data['time'], doctor):
-            return Response({'message': 'This appointment request clashes with another.'}, status=HTTP_400_BAD_REQUEST)
+            return Response({'message': 'This request clashes with existing appointment'}, status=HTTP_400_BAD_REQUEST)
 
         serializer.save()
         return Response(status=HTTP_201_CREATED)
 
     def update(self, request, pk):
-        # @TODO add permission checking for doctor and patient
-        appointment = Appointment.objects.all().filter(pk=pk)[0]
 
-        if appointment.state == 'P':
-            appointment.state = request.data['state']
+        isDoctor = User.objects.filter(username=self.request.user.username).filter(
+            groups__name__in=['doctors'])
+
+        appointment = Appointment.objects.all().filter(
+            pk=pk)[0]  # @TODO check if appointment is None
+
+        if isDoctor:
+            if appointment.state != 'P':
+                return Response({'message': 'Only PENDING appointments can be updated'}, status=HTTP_403_FORBIDDEN)
+
+            appointment.state = request.data.get('state', None)
+            if appointment.state != 'A' and appointment.state != 'D':
+                return Response({'message': 'Invalid state field'}, status=HTTP_400_BAD_REQUEST)
+
             appointment.save()
             return Response(status=HTTP_200_OK)
-        elif appointment.state == 'D':
-            appointment.time = request.data['time']
+
+        else:
+            if appointment.state != 'D':
+                return Response({'message': 'Only DECLINED appointments can be rescheduled'}, status=HTTP_403_FORBIDDEN)
+
+            newTime = request.data.get('time', None)
+            if newTime is None:
+                return Response({'message': 'Missing time field'}, status=HTTP_400_BAD_REQUEST)
+
+            if isExpired(newTime):
+                return Response({'message': 'Invalid appointment time'}, status=HTTP_400_BAD_REQUEST)
+
+            if isClashing(newTime, appointment.doctor):
+                return Response({'message': 'This request clashes with existing appointment'},
+                                status=HTTP_400_BAD_REQUEST)
+
+            appointment.time = newTime
             appointment.state = 'P'
             appointment.save()
             return Response(status=HTTP_200_OK)
-        return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

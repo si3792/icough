@@ -17,7 +17,7 @@ def isClashing(time, doctor):
     return False
 
 
-def isExpired(appointment):
-    if appointment.time > timezone.now():
+def isExpired(time):
+    if time > timezone.now():
         return False
     return True
