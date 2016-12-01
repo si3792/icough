@@ -17,15 +17,15 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     API endpoint for Appointments
 
     GET returns a list of UPCOMING appointments where:
-    a) If request comes from a patient, appointments where patient = user are returned.
-    b) If request comes from a doctor, appointments where doctor = user are returned.
+    - If request comes from a patient, appointments where patient = user are returned.
+    - If request comes from a doctor, appointments where doctor = user are returned.
 
     POST expects a a `time` field as well as `doctor` object field.
-    Doctor objects are retrieved from /icough/doctors/.
+    ( Doctor objects are retrieved from /icough/doctors/ )
 
     PUT is used to update appointment at /icough/appointments/id/
-    If the request comes from a doctor `state` field is expected, containing either 'A' or 'D'.
-    If the request comes from a patient, `time` field is expected.
+    - If the request comes from a doctor, `state` field is expected, containing either 'A' or 'D'.
+    - If the request comes from a patient, `time` field is expected.
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -89,8 +89,8 @@ class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     API endpoint for Appointments history
 
     GET returns a list of EXPIRED appointments where:
-    a) If request comes from a patient, appointments where patient = user are returned.
-    b) If request comes from a doctor, appointments where doctor = user are returned.
+    - If request comes from a patient, appointments where patient = user are returned.
+    - If request comes from a doctor, appointments where doctor = user are returned.
     """
 
     queryset = Appointment.objects.all()
