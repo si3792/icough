@@ -9,21 +9,23 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from django.utils import timezone
-from icough.appointment_utilities import isClashing
+from icough.appointment_utilities import isClashing, isExpired
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
-    API endpoint that allows Appointments to be viewed, created or updated.
+    API endpoint for Appointments
 
     GET returns a list of UPCOMING appointments where:
-    (a) patient = current user, if user is a patient
-    (b) doctor = current user, if user is a doctor
+    a) If request comes from a patient, appointments where patient = user are returned.
+    b) If request comes from a doctor, appointments where doctor = user are returned.
 
-    POST expects a doctor object field, as well as time
+    POST expects a a `time` field as well as `doctor` object field.
+    Doctor objects are retrieved from /icough/doctors/.
 
-    PUT expects a state field if appointment is pending
-    PUT expects a time field if appointment is declined
+    PUT is used to update appointment at /icough/appointments/id/
+    If the request comes from a doctor `state` field is expected, containing either 'A' or 'D'.
+    If the request comes from a patient, `time` field is expected.
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -84,11 +86,11 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
 
 class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
-    API endpoint for fetching a list of appointment history
+    API endpoint for Appointments history
 
-    GET returns an array of EXPIRED appointments where
-    (a) patient = current user, if user is a patient
-    (b) doctor = current user, if user is a doctor
+    GET returns a list of EXPIRED appointments where:
+    a) If request comes from a patient, appointments where patient = user are returned.
+    b) If request comes from a doctor, appointments where doctor = user are returned.
     """
 
     queryset = Appointment.objects.all()
@@ -113,9 +115,9 @@ class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 class DoctorsListView(generics.ListAPIView):
     """
-    API endpoint for fetching a list of doctors
+    API endpoint for fetching a list of doctors.
 
-    GET returns an array of doctors
+    GET returns an array of doctors.
     """
 
     queryset = User.objects.filter(groups__name__in=['doctors'])
