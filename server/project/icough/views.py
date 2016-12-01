@@ -9,13 +9,14 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from django.utils import timezone
+from icough.appointment_utilities import isClashing
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     API endpoint that allows Appointments to be viewed, created or updated.
 
-    GET returns a list of upcoming appointments where
+    GET returns a list of UPCOMING appointments where:
     (a) patient = current user, if user is a patient
     (b) doctor = current user, if user is a doctor
 
@@ -58,6 +59,10 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         })
 
         serializer.is_valid(raise_exception=True)
+
+        if isClashing(serializer.validated_data['time'], doctor):
+            return Response({'message': 'This appointment request clashes with another.'}, status=HTTP_400_BAD_REQUEST)
+
         serializer.save()
         return Response(status=HTTP_201_CREATED)
 
@@ -77,13 +82,11 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         return Response(status=HTTP_400_BAD_REQUEST)
 
 
-
-
 class AppointmentHistoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     API endpoint for fetching a list of appointment history
 
-    GET returns an array of (old) appointments where
+    GET returns an array of EXPIRED appointments where
     (a) patient = current user, if user is a patient
     (b) doctor = current user, if user is a doctor
     """
