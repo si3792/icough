@@ -25,8 +25,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     ( Doctor objects are retrieved from /icough/doctors/ )
 
     PUT is used to update appointment at /icough/appointments/id/
-    - If the request comes from a doctor, `state` field is expected, containing either 'A' or 'D'.
-    - If the request comes from a patient, `time` field is expected.
+    - If request comes from a doctor, `state` field is expected, containing either 'A' or 'D'.
+    - If request comes from a patient, `time` field is expected.
     """
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
