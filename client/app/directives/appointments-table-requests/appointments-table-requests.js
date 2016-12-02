@@ -1,9 +1,9 @@
 "use strict";
 
-app.directive('cdReviewRequestsTable', function() {
+app.directive('cdAppointmentsTableRequests', function() {
     return {
         restrict: 'E',
-        templateUrl: 'app/directives/review-requests-table/review-requests-table.html',
+        templateUrl: 'app/directives/appointments-table-requests/appointments-table-requests.html',
         controller: ['$scope', 'AccountService', 'AlertModalService', function($scope, AccountService, AlertModalService) {
 
             $scope.RELATIVE_DATE_CUTOFF_MINUTES = 600;
