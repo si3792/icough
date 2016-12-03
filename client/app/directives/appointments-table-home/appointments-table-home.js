@@ -9,7 +9,6 @@ app.directive('cdAppointmentsTableHome', function() {
             $scope.directiveName = 'appointments-table-home';
 
             $scope.queryParams = {
-                //state: 'P',
                 ordering: 'time',
                 page: 1
             };

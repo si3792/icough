@@ -16,7 +16,7 @@ app.directive('cdAppointmentsTableRequests', function() {
 
             $controller('AppointmentsTableController', {$scope: $scope});
 
-
+            
             $scope.updateRequest = function(appointment, newState) {
                 DEBUG && console.log(appointment);
                 appointment.state = newState;

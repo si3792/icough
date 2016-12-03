@@ -33,3 +33,14 @@ API endpoint for Appointments history
 Endpoint for fetching a list of doctors.  
 
 **GET** returns an array of doctor objects.
+
+## Further configuration
+
+### Changing the relative date cutoff value
+Times for appointments that have happened (or are going to happen)
+recently are showed as relative to the current moment.
+
+ (eg 'a few seconds ago', 'in an hour', etc).
+
+ You can modify `RELATIVE_DATE_CUTOFF_MINUTES` in `/client/app/controllers/appointments-table-controller/appointments-table-controller.js`
+ to control the cutoff time for displaying datetimes as relative.
