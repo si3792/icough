@@ -10,6 +10,8 @@ app.controller('AppointmentsTableController', ['$scope', 'AccountService', funct
 
     $scope.RELATIVE_DATE_CUTOFF_MINUTES = 600;
 
+    $scope.appointmentsData = {};
+
     $scope.refreshData = function() {
         if($scope.directiveName == 'appointments-table-history') {
         $scope.appointmentsData = AccountService.history.get($scope.queryParams);
