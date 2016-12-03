@@ -85,7 +85,7 @@
           </label>
           <div>
               <div style="display:inline-block; min-height:290px; margin:auto;">
-                  <div uib-datepicker ng-required='true' ng-change='changed()' ng-model="date" class="well well-sm" datepicker-options="datepickerOptions"></div>
+                  <div uib-datepicker ng-required='true' ng-change='updateDatetime()' ng-model="date" class="well well-sm" datepicker-options="datepickerOptions"></div>
               </div>
           </div>
       </div>
@@ -95,7 +95,7 @@
           </label>
           <div>
               <div style="display:inline-block">
-                  <div class='well well-sm' uib-timepicker ng-model="time" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="true"></div>
+                  <div class='well well-sm' uib-timepicker ng-model="time" ng-change="updateDatetime()" hour-step="hstep" minute-step="mstep" show-meridian="true"></div>
               </div>
           </div>
       </div>
