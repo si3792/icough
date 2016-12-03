@@ -44,3 +44,8 @@ recently are showed as relative to the current moment.
 
  You can modify `RELATIVE_DATE_CUTOFF_MINUTES` in `/client/app/controllers/appointments-table-controller/appointments-table-controller.js`
  to control the cutoff time for displaying datetimes as relative.
+
+ ## Further development notes
+
+- A lot of reduntant server calls are made using `AccountService`
+for isDoctor checking. `AccountService` should be refactored to cache the requests.
