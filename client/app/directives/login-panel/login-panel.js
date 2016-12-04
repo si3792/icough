@@ -51,6 +51,7 @@ app.directive('cdLoginPanel', function() {
                         $scope.auth2 = gapi.auth2.init({
                             client_id: CONSTANTS.GOOGLE_CLIENT_ID,
                             access_type: 'offline',
+                            scope: 'https://www.googleapis.com/auth/calendar',  // Request permission for calendar manipulation
                             approval_prompt: 'force' // may not be needed: Always store user refresh tokens. If your application needs a new refresh token it must send a request with the approval_prompt query parameter set to force. This will cause the user to see a dialog to grant permission to your application again.
                         });
                     });
