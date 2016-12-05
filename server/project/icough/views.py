@@ -55,14 +55,14 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         if isDoctor:
             return Response({'message': 'Only patients can request appointments'}, status=HTTP_403_FORBIDDEN)
 
-        doctor = User.objects.all().filter(
-            username=(request.data['doctor'].get('username', None)))
-        if not doctor:
+        try:
+            doctor = User.objects.all().filter(
+                username=(request.data['doctor'].get('username', None)))[0]
+        except:
             return Response({'message': 'Invalid doctor field'}, status=HTTP_400_BAD_REQUEST)
-        doctor = doctor[0]
 
         serializer = AppointmentSerializer(data={
-            'time': request.data['time']
+            'time': request.data.get('time', None)
         }, context={
             'patient': request.user,
             'doctor': doctor
@@ -84,12 +84,10 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
         isDoctor = User.objects.filter(username=self.request.user.username).filter(
             groups__name__in=['doctors'])
 
-        appointment = Appointment.objects.all().filter(
-            pk=pk)
-
-        if appointment:
-            appointment = appointment[0]
-        else:
+        try:
+            appointment = Appointment.objects.all().filter(
+                pk=pk)[0]
+        except:
             return Response({'message': 'Invalid pk'}, status=HTTP_400_BAD_REQUEST)
 
         if isDoctor:
@@ -107,8 +105,10 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
 
             # Save event for Google users
             if appointment.state == 'A':
-                google_utilities.createCalendarEvent(appointment, appointment.patient)
-                google_utilities.createCalendarEvent(appointment, appointment.doctor)
+                google_utilities.createCalendarEvent(
+                    appointment, appointment.patient)
+                google_utilities.createCalendarEvent(
+                    appointment, appointment.doctor)
 
             return Response(status=HTTP_200_OK)
 
