@@ -7,12 +7,19 @@ import json
 
 
 def createCalendarEvent(appointment, user):
+    """
+    Takes an Appointment and User as parameters.
+    If the user has connected social account with Google,
+    an event is saved to his/hers Google Calendar.
 
-    # Check if user has social account with Google
+    `True` is returned on success.
+    `False` is returned if the user doesn't have a social account with Google, or in case of an error
+    """
+
     try:
         social = user.social_auth.get(provider='google-oauth2')
     except:
-        return False
+        return False  # No connected Google account
 
     access_token = social.extra_data.get('access_token', None)
     if access_token is None:
@@ -56,6 +63,11 @@ def createCalendarEvent(appointment, user):
 
 
 def refreshToken(social):
+    """
+    Function which takes UserSocialAuth for Google OAuth2 provider
+    and tries to refresh its access_token using `refresh_token` grant type.
+    Returns `True` on success.
+    """
 
     refreshToken = social.extra_data.get('refresh_token', None)
     if refreshToken is None:
