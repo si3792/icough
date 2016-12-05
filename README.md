@@ -77,7 +77,7 @@ Identical to [drf-angular-user-system (testing)](https://github.com/si3792/drf-a
 Check out [drf-angular-user-system (deployment considerations)](https://github.com/si3792/drf-angular-user-system#deployment-considerations)
 before deploying.
 
- ## Further development notes
+## Further development notes
 
 - A lot of reduntant server calls are made using `AccountService`
 for isDoctor checking. `AccountService` should be refactored to cache the requests.
