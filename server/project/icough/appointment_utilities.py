@@ -1,4 +1,7 @@
-# A collection of helper functions for the Appointment model
+"""
+A collection of helper functions for the Appointment model
+"""
+
 from icough.models import Appointment
 from icough.settings import APPOINTMENT_DURATION, APPOINTMENT_DURATION_DELTA
 from django.utils import timezone
