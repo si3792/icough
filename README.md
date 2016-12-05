@@ -64,7 +64,7 @@ recently are showed as relative to the current moment.
  You can modify `RELATIVE_DATE_CUTOFF_MINUTES` in `/client/app/controllers/appointments-table-controller/appointments-table-controller.js`
  to control the cutoff time for displaying datetimes as relative.
 
- ### drf-angular-user-system
+### drf-angular-user-system
 
  Check out [drf-angular-user-system (additional configuration)](https://github.com/si3792/drf-angular-user-system#additional-configurations).
 
