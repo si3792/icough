@@ -11,7 +11,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
 from django.utils import timezone
 from icough.appointment_utilities import isClashing, isExpired
 from django.utils.dateparse import parse_datetime
-from icough import google_calendar
+from icough import google_utilities
 
 
 class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
@@ -107,8 +107,8 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
 
             # Save event for Google users
             if appointment.state == 'A':
-                google_calendar.createCalendarEvent(appointment, appointment.patient)
-                google_calendar.createCalendarEvent(appointment, appointment.doctor)
+                google_utilities.createCalendarEvent(appointment, appointment.patient)
+                google_utilities.createCalendarEvent(appointment, appointment.doctor)
 
             return Response(status=HTTP_200_OK)
 
