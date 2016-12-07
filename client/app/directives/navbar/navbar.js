@@ -3,6 +3,7 @@
  *    Hides itself when user is unauthenticated    *
  ***************************************************/
 
+"use strict";
 
 app.directive('cdNavbar', [function() {
     return {
