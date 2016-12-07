@@ -54,4 +54,47 @@ describe('AccountService', function() {
         expect(data.social_provider).toEqual('facebook');
     });
 
+
+    it("should get isDoctor status", function() {
+
+        var server_data = {
+            username: "Username",
+            email: "email@foo.bar",
+            first_name: "Foo",
+            last_name: "Bar",
+            groups: [{
+              'name': 'doctors'
+            }]
+        };
+        $httpBackend.expectGET(CONSTANTS.BASE_URL + '/account/').respond(200, server_data);
+
+        var isDoctor = 'unknown';
+        AccountService.isDoctor().then(function(resp){
+          isDoctor = resp;
+        });
+        $httpBackend.flush();
+        expect(isDoctor).toEqual(true);
+
+    });
+
+    it("should get isDoctor status (2)", function() {
+
+        var server_data = {
+            username: "Username",
+            email: "email@foo.bar",
+            first_name: "Foo",
+            last_name: "Bar",
+            groups: []
+        };
+        $httpBackend.expectGET(CONSTANTS.BASE_URL + '/account/').respond(200, server_data);
+
+        var isDoctor = 'unknown';
+        AccountService.isDoctor().then(function(resp){
+          isDoctor = resp;
+        });
+        $httpBackend.flush();
+        expect(isDoctor).toEqual(false);
+
+    });
+
 });
