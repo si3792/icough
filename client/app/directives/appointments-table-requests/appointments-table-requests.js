@@ -18,7 +18,9 @@ app.directive('cdAppointmentsTableRequests', function() {
                 page: 1
             };
 
-            $controller('AppointmentsTableController', {$scope: $scope});
+            $controller('AppointmentsTableController', {
+                $scope: $scope
+            });
 
             /**
              *    Takes a pending appointment and tries to update its state
@@ -32,12 +34,16 @@ app.directive('cdAppointmentsTableRequests', function() {
             $scope.updateRequest = function(appointment, newState) {
                 DEBUG && console.log(appointment);
                 appointment.state = newState;
-                AccountService.appointments.update({appId: appointment.id}, appointment, function(response) {
+                AccountService.appointments.update({
+                    appId: appointment.id
+                }, appointment, function(response) {
                     $scope.refreshData();
-                    if(newState == 'D') AlertModalService.alert('Declined', 'This request has been declined', 'info');
-                    else if(newState == 'A') AlertModalService.alert('Approved', 'This appointment has been added to your schedule', 'success');
-                }, function(response){
-                  AlertModalService.alert('Error', 'An error occured processing this.', 'danger');
+                    if (newState == 'D') AlertModalService.alert('Declined', 'This request has been declined', 'info');
+                    else if (newState == 'A') AlertModalService.alert('Approved', 'This appointment has been added to your schedule', 'success');
+                }, function(response) {
+                    if ('data' in response && response.data.message == 'This request clashes with existing appointment')
+                        AlertModalService.alert('Error', 'This request clashes with existing appointment', 'danger');
+                    else AlertModalService.alert('Error', 'An error occured processing this.', 'danger');
                 });
             }
 

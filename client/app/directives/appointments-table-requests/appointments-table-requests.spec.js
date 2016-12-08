@@ -78,8 +78,9 @@ describe("cd-appointments-table-requests", function() {
         });
 
         it("should successfully decline appointment", function() {
-            spyOn(AccountService.appointments, 'update').and.callFake(function(opt, appointment, callback) {
+            spyOn(AccountService.appointments, 'update').and.callFake(function(opt, appointment, callback, errorCallback) {
                 if (opt.appId == 1) callback();
+                else errorCallback();
             });
             spyOn(mockAlertModalService.prototype, 'alert').and.callThrough();
 
@@ -94,8 +95,43 @@ describe("cd-appointments-table-requests", function() {
             expect(mockAlertModalService.prototype.alert).toHaveBeenCalledWith('Declined', 'This request has been declined', 'info');
         });
 
-        it("should display an error message in case of an error", function () {
-          
+        it("should display error message in case of a clashing error", function() {
+            spyOn(AccountService.appointments, 'update').and.callFake(function(opt, appointment, callback, errorCallback) {
+               errorCallback({
+                 'data': {
+                   'message': 'This request clashes with existing appointment'
+                 }
+               });
+            });
+            spyOn(mockAlertModalService.prototype, 'alert').and.callThrough();
+
+            $scope.$digest();
+            $scope.updateRequest({
+                'id': 2,
+                'time': 'time',
+                'state': 'P',
+            }, 'D');
+            $scope.$digest();
+            expect(AccountService.appointments.update).toHaveBeenCalled();
+            expect(mockAlertModalService.prototype.alert).toHaveBeenCalledWith('Error', 'This request clashes with existing appointment', 'danger');
+        });
+
+        it("should display an error message in case of a generic error", function() {
+            spyOn(AccountService.appointments, 'update').and.callFake(function(opt, appointment, callback, errorCallback) {
+                if (opt.appId == 1) callback({});
+                else errorCallback({});
+            });
+            spyOn(mockAlertModalService.prototype, 'alert').and.callThrough();
+
+            $scope.$digest();
+            $scope.updateRequest({
+                'id': 2,
+                'time': 'time',
+                'state': 'P',
+            }, 'D');
+            $scope.$digest();
+            expect(AccountService.appointments.update).toHaveBeenCalled();
+            expect(mockAlertModalService.prototype.alert).toHaveBeenCalledWith('Error', 'An error occured processing this.', 'danger');
         });
 
     });
