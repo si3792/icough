@@ -94,6 +94,10 @@ describe("cd-appointments-table-requests", function() {
             expect(mockAlertModalService.prototype.alert).toHaveBeenCalledWith('Declined', 'This request has been declined', 'info');
         });
 
+        it("should display an error message in case of an error", function () {
+          
+        });
+
     });
 
 });

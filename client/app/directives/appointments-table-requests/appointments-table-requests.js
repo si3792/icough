@@ -23,7 +23,7 @@ app.directive('cdAppointmentsTableRequests', function() {
             /**
              *    Takes a pending appointment and tries to update its state
              *    to either 'A' or 'D' using AccountService. Displays AlertModal in
-             *    case of success.
+             *    case of success or error.
              *
              *    @param  {Object} appointment Appointment object
              *    @param  {String} newState    Either 'A' or 'D'
@@ -36,6 +36,8 @@ app.directive('cdAppointmentsTableRequests', function() {
                     $scope.refreshData();
                     if(newState == 'D') AlertModalService.alert('Declined', 'This request has been declined', 'info');
                     else if(newState == 'A') AlertModalService.alert('Approved', 'This appointment has been added to your schedule', 'success');
+                }, function(response){
+                  AlertModalService.alert('Error', 'An error occured processing this.', 'danger');
                 });
             }
 
