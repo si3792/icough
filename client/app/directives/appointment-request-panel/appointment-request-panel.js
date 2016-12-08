@@ -1,3 +1,7 @@
+/******************************************************
+ *    Template directive for requesting appointments. *
+ ******************************************************/
+
 "use strict";
 
 app.directive('cdAppointmentRequestPanel', function() {
@@ -12,6 +16,9 @@ app.directive('cdAppointmentRequestPanel', function() {
 
             $scope.doctors = DoctorsService.doctors.query();
 
+            /**
+             *    Submits appointment request using AccountService
+             */
             $scope.requestAppointment = function() {
                 AccountService.appointments.save({}, {
                     'time': $scope.datetime,
@@ -25,6 +32,7 @@ app.directive('cdAppointmentRequestPanel', function() {
                     DEBUG && console.log(response);
                 }, function(response) {
                     // error
+                    AlertModalService.alert('Error', response.data.message, 'danger');
                     DEBUG && console.log(response);
                 });
             };
