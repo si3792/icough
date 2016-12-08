@@ -1,3 +1,7 @@
+/********************************************************************
+ *    Template directive for displaying a table of old appointments *
+ ********************************************************************/
+
 "use strict";
 
 app.directive('cdAppointmentsTableHistory', function() {
