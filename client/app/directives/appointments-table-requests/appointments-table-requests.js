@@ -1,3 +1,7 @@
+/*************************************************************
+ *    Template directive for displaying appointment requests *
+ *************************************************************/
+
 "use strict";
 
 app.directive('cdAppointmentsTableRequests', function() {
@@ -16,7 +20,15 @@ app.directive('cdAppointmentsTableRequests', function() {
 
             $controller('AppointmentsTableController', {$scope: $scope});
 
-            
+            /**
+             *    Takes a pending appointment and tries to update its state
+             *    to either 'A' or 'D' using AccountService. Displays AlertModal in
+             *    case of success.
+             *
+             *    @param  {Object} appointment Appointment object
+             *    @param  {String} newState    Either 'A' or 'D'
+             *
+             */
             $scope.updateRequest = function(appointment, newState) {
                 DEBUG && console.log(appointment);
                 appointment.state = newState;
