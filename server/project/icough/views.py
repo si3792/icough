@@ -101,7 +101,7 @@ class AppointmentViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
             if appointment.state != 'A' and appointment.state != 'D':
                 return Response({'message': 'Invalid state field'}, status=HTTP_400_BAD_REQUEST)
 
-            if isClashing(appointment.time, request.user):
+            if isClashing(appointment.time, request.user) and appointment.state == 'A':
                 return Response({'message': 'This request clashes with existing appointment'},
                                 status=HTTP_400_BAD_REQUEST)
 
