@@ -46,7 +46,7 @@ app.config(['$routeProvider', function($routeProvider) {
         "/settings": Route('views/settings.html', true),
         "/request-appointment": Route('views/request-appointment.html', true),
         "/review-requests": Route('views/review-requests.html', true),
-        "/appointment-history": Route('views/appointment-history', true)
+        "/appointment-history": Route('views/appointment-history.html', true)
     };
 
     //this loads up our routes dynamically from window.routes
