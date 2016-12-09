@@ -1,6 +1,8 @@
 # icough
 Web application for doctors and patients, built on top of [drf-angular-user-system](https://github.com/si3792/drf-angular-user-system).
 
+[Check it out here](http://simoiliev.me/icough.html)
+
 ### Index
 
 3. [Setup](#setup)
