@@ -65,6 +65,11 @@ recently are showed as relative to the current moment.
 
  You can modify `RELATIVE_DATE_CUTOFF_MINUTES` in `/client/app/controllers/appointments-table-controller/appointments-table-controller.js`
  to control the cutoff time for displaying datetimes as relative.
+ 
+### Changing the appointment duration
+
+Appointments are by default 30 minutes long. You can edit this value by setting `APPOINTMENT_DURATION`
+in `server/project/icough/settings.py`.
 
 ### drf-angular-user-system
 
